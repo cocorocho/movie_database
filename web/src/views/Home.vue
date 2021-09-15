@@ -1,6 +1,23 @@
 <template>
-  <div>
+  <div class="max-w-4xl lg:max-w-7xl mx-auto px-5 py-3 space-y-5">
     <AdvancedSearch/>
+    <div id="movie-content">
+        <div class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+            <MovieCard v-for="movie in movies" 
+                :key="movie.name"
+                :name="toTitle(movie.name)"
+                :movieUrl="movie.url"
+                :poster="movie.poster"
+                :year="movie.year"
+            />
+            <MovieCard v-for="movie in movies" 
+                :key="movie.name"
+                :name="toTitle(movie.name)"
+                :poster="movie.poster"
+                :year="movie.year"
+            />
+        </div>        
+    </div>
   </div>
 </template>
 
@@ -22,6 +39,7 @@
 import axios from "axios"
 import Slider from '@vueform/slider'
 import AdvancedSearch from "@/components/AdvancedSearch"
+import MovieCard from "@/components/MovieCard"
 
 export default {
     data() {
@@ -31,7 +49,7 @@ export default {
             yearValue: [1800, this.getYear()],
             scoreImdb: 7,
             scoreRottenTomatoes: 60,
-            movies: []
+            movies: this.$store.state.movies
         }
     },
     methods: {
@@ -66,21 +84,25 @@ export default {
             }
             axios.get(baseUrl, {params: args})
                 .then(function(response) {
-                   console.log(this.$store)
+                    // TODO Advanced Search Request
                 }).catch(function(err) {
                     console.log(err)
                 })
         },
+        toTitle(string) {
+            let str = string[0].toUpperCase() + string.slice(1)
+            return str
+        },
     },
     components: {
         Slider,
-        AdvancedSearch
+        AdvancedSearch,
+        MovieCard
     },
     beforeMount() {
         this.getGenres()
     },
     mounted() {
-      
     },
 }
 </script>

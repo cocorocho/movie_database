@@ -1,5 +1,5 @@
 <template>
-    <div id="advanced-search" class="px-5 py-3 max-w-4xl lg:max-w-7xl mx-auto bg-green">
+    <div id="advanced-search" class="bg-green">
         <div class="container rounded-md min-w-full border-opacity-50 border-4 border-green-100 bg-green-100 px-5 py-2 space-y-5">
             <div class="grid md:grid-cols-3 md:space-x-6 space-y-3" ref="advancedSearchBox">
                 <div class="space-x-2" id="genres">
@@ -36,7 +36,6 @@
             </div>
         </div>
     </div>
-    
 </template>
 
 // https://bestofvue.com/repo/vueform-slider-vuejs-slider#multiple-slider

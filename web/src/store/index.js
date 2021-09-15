@@ -8,6 +8,7 @@ export default createStore({
     addMovie(state, obj) {
       if (state.movies.length) state.movies = []
       state.movies.push(obj)
+      console.log(state.movies)
     }
   },
   actions: {
