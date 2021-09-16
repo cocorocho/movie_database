@@ -73,3 +73,6 @@ export default {
     }
 }
 </script>
+
+# TODO Poster Scaling
+# TODO Movie info tab

@@ -4,15 +4,9 @@
     <div id="movie-content">
         <div class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
             <MovieCard v-for="movie in movies" 
-                :key="movie.name"
+                :key="movie.id"
                 :name="toTitle(movie.name)"
                 :movieUrl="movie.url"
-                :poster="movie.poster"
-                :year="movie.year"
-            />
-            <MovieCard v-for="movie in movies" 
-                :key="movie.name"
-                :name="toTitle(movie.name)"
                 :poster="movie.poster"
                 :year="movie.year"
             />
@@ -72,23 +66,6 @@ export default {
             let year = date.getFullYear()
             return year
         },
-        findMovies() {
-            let baseUrl = "movies/find/"
-            var vm = this
-            let args = {
-                genres: vm.checkedGenres,
-                yearMin: vm.yearValue[0],
-                yearMax: vm.yearValue[1],
-                scoreImdb: vm.scoreImdb,
-                scoreRottenTomatoes: vm.scoreRottenTomatoes
-            }
-            axios.get(baseUrl, {params: args})
-                .then(function(response) {
-                    // TODO Advanced Search Request
-                }).catch(function(err) {
-                    console.log(err)
-                })
-        },
         toTitle(string) {
             let str = string[0].toUpperCase() + string.slice(1)
             return str
@@ -106,4 +83,3 @@ export default {
     },
 }
 </script>
-

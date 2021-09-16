@@ -4,7 +4,7 @@
             <div class="grid md:grid-cols-3 md:space-x-6 space-y-3" ref="advancedSearchBox">
                 <div class="space-x-2" id="genres">
                     <h1 class="pt-1 font-extrabold text-2xl text-center">Genres</h1>
-                    <label class="inline-flex items-center" v-for="genre in genres">
+                    <label class="inline-flex items-center" v-for="genre in genres" :key="genre.id">
                     <input type="checkbox" class="form-checkbox" :value="genre.name" v-model="checkedGenres">
                     <span class="ml-2 font-semibold">{{ genre.name }}</span>
                     </label>
@@ -61,10 +61,11 @@ export default {
         return {
             advancedSearchToggle: false,
             genres: null,
+            searchIndex: 0,
             checkedGenres: [],
             yearValue: [1800, this.getYear()],
-            scoreImdb: 7,
-            scoreRottenTomatoes: 60,
+            scoreImdb: [4, 7],
+            scoreRottenTomatoes: [40, 80],
         }
     },
     methods: {
@@ -91,6 +92,7 @@ export default {
             let baseUrl = "movies/find/"
             var vm = this
             let args = {
+                searchIndex: vm.searchIndex, 
                 genres: vm.checkedGenres,
                 yearMin: vm.yearValue[0],
                 yearMax: vm.yearValue[1],
@@ -99,7 +101,16 @@ export default {
             }
             axios.get(baseUrl, {params: args})
                 .then(function(response) {
-                    console.log(this.$store)
+                    if (response.data.length) {
+                        for (let movie in response.data) {
+                            vm.$store.commit("addMovie", {
+                                obj:response.data[movie],
+                                many:true}
+                            )
+                            console.log(movie)
+                        }
+                    }
+                    vm.searchIndex += 30
                 }).catch(function(err) {
                     console.log(err)
                 })

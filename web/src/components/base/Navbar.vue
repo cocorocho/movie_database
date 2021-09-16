@@ -79,7 +79,9 @@ export default {
 				}})
 				.then(function(response) {
 					let mov = response.data
-					vm.$store.commit("addMovie", mov)
+					if (response.data !== "") {
+						vm.$store.commit("addMovie", {obj:mov})
+					}
 				}).catch(function(err) {
 					console.log(err)
 				})

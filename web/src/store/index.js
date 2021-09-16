@@ -5,8 +5,11 @@ export default createStore({
     movies: []
   },
   mutations: {
-    addMovie(state, obj) {
-      if (state.movies.length) state.movies = []
+    addMovie(state, payload) {
+      let obj = payload.obj
+      let many = payload.many
+      console.log(many)
+      if (state.movies.length && !many) state.movies = []
       state.movies.push(obj)
       console.log(state.movies)
     }
