@@ -32,10 +32,13 @@ class Director(models.Model):
 
 class Movie(models.Model):
     name = models.CharField(max_length=100)
-    year = models.IntegerField()
+    year = models.IntegerField(null=True)
     genres = models.ManyToManyField(Genre)
     director = models.ForeignKey(Director, on_delete=models.CASCADE, null=True, blank=True)
     poster = models.URLField(verbose_name="poster_url", default=None)
+    score_imdb  = models.IntegerField(null=True)
+    score_rotten_tomatoes = models.IntegerField(null=True)
+    description = models.TextField(max_length=900, null=True)
 
     def __repr__(self) -> str:
         return self.name.title()
