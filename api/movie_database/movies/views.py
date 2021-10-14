@@ -27,9 +27,9 @@ class FindMovie(APIView):
         movie_name = request.GET.get("movieName")
 
         if movie_name:
-            movie_name = movie_name.lower()
+            movie_name = movie_name.title()
             try:
-                movie = Movie.objects.get(name=movie_name)
+                movie = Movie.objects.filter(name=movie_name).first()
                 serializer = MovieSerializer(movie, many=False)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except Movie.DoesNotExist:
@@ -69,14 +69,13 @@ class FindMovie(APIView):
             try:
                 movies = Movie.objects.filter(
                     Q(score_imdb__gte=score_imdb[0], score_imdb__lte=score_imdb[1]) | Q(score_imdb__isnull=True),
-                    Q(score_rotten_tomatoes__gte=score_rotten_tomatoes[0], score_rotten_tomatoes__lte=score_rotten_tomatoes[1]) | Q(score_rotten_tomatoes__isnull=True),
+                    Q(score_rotten_tomatoes_audience__gte=score_rotten_tomatoes[0], score_rotten_tomatoes_audience__lte=score_rotten_tomatoes[1]) | Q(score_rotten_tomatoes_audience__isnull=True),
                     year__gte=release_year_min,
                     year__lte=release_year_max,                                        
                     genres__in=genres,
                 ).distinct()[search_index:target_index]
                 if not movies:
                     return Response(status=status.HTTP_204_NO_CONTENT)
-                print(movies)
                 serializer = MovieSerializer(movies, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except Movie.DoesNotExist:
