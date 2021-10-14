@@ -80,10 +80,10 @@ export default {
 				.then(function(response) {
 					let mov = response.data
 					if (response.data !== "") {
+						mov.poster.path = "http://localhost:8000" + mov.poster.path
 						vm.$store.commit("addMovie", {obj:mov})
 					}
 				}).catch(function(err) {
-					console.log(err)
 				})
 				vm.movieName = ""
 			}
