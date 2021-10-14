@@ -9,13 +9,22 @@
                 :movieUrl="movie.url"
                 :poster="movie.poster"
                 :year="movie.year"
+                :description="movie.description"
+                :language="movie.language.name"
+                :genres="movie.genres"
+                :metacritic_viewer_score="movie.score_metacritic_viewer"
+                :metacritic_critic_score="movie.score_metacritic_critic"
+                :metacritic_vote_count_viewer="movie.vote_count_metacritic_viewer"
+                :metacritic_vote_count_critic="movie.vote_count_metacritic_critic"
+                :imdb_score="movie.score_imdb"
+                :imdb_vote_count="movie.vote_count_imdb"
+                :rottentomatoes_viewer_score="movie.score_rotten_tomatoes_audience"
+                :rottentomatoes_viewer_critic="movie.score_rotten_tomatoes_critic"
             />
-        </div>        
+        </div>      
     </div>
   </div>
 </template>
-
-// https://bestofvue.com/repo/vueform-slider-vuejs-slider#multiple-slider
 
 <style src="@vueform/slider/themes/default.css">
 #grow {
