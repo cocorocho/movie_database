@@ -10,6 +10,9 @@
 
   export default {
     name: "App",
+    created() {
+      document.title = "Movie Site"
+    },
     components: {
       Navbar,
     },
