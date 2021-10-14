@@ -11,19 +11,18 @@
                 </div>
                 <div class="text-center">
                     <h1 class="pt-1 pb-8 font-extrabold text-2xl">Release Year</h1>
-                    <Slider v-model="yearValue" :min="1800" :max="getYear()" />
+                    <Slider v-model="yearValue" :min="1900" :max="getYear()" />
                 </div>
                 <div class="text-center space-y-1">
                     <h1 class="pt-1 pb-1.5 font-extrabold text-2xl">Scores</h1>
-                    <label for="score-imdb" class="font-bold">IMDB Score</label>
-                    <Slider v-model="scoreImdb" :min="1" :max="10" name="score-imdb"/>
+                    <label class="font-bold">IMDB Score</label>
+                    <Slider v-model="scoreImdb" :min="1" :max="10"/>
                     <br>
-                    <label for="score-imdb" class="font-bold">Rotten Tomates Score</label>
-                    <Slider v-model="scoreRottenTomatoes" :min="1" :max="100" name="score-imdb"/>
-
-                    <!-- <label for="score-imdb font-semibold">IMDB Score</label>
-                    <Slider v-model="scoreImdb" :min="0" :max="10" name="score-imdb"/> -->
-
+                    <label class="font-bold">Rotten Tomates Score</label>
+                    <Slider v-model="scoreRottenTomatoes" :min="1" :max="100"/>
+                    <br>
+                    <label class="font-bold">Metacritic Score</label>
+                    <Slider v-model="scoreMetacritic" :min="1" :max="100"/>
                 </div>
             </div>
             <div class="text-center">
@@ -63,9 +62,10 @@ export default {
             genres: null,
             searchIndex: 0,
             checkedGenres: [],
-            yearValue: [1800, this.getYear()],
+            yearValue: [1900, this.getYear()],
             scoreImdb: [4, 7],
             scoreRottenTomatoes: [40, 80],
+            scoreMetacritic: [40, 60]
         }
     },
     methods: {
@@ -88,7 +88,7 @@ export default {
             let year = date.getFullYear()
             return year
         },
-        findMovies() {
+        findMovies(reset=true) {
             let baseUrl = "movies/find/"
             var vm = this
             let args = {
@@ -99,22 +99,36 @@ export default {
                 scoreImdb: vm.scoreImdb,
                 scoreRottenTomatoes: vm.scoreRottenTomatoes
             }
+            if (reset) vm.$store.commit("resetMovies")
             axios.get(baseUrl, {params: args})
                 .then(function(response) {
                     if (response.data.length) {
                         for (let movie in response.data) {
+                            if (response.data[movie].poster.path == null) {
+                                response.data[movie].poster.path = "http://localhost:8000/media/cinema-4153289_640.jpg"
+                            } else {
+                                response.data[movie].poster.path = "http://localhost:8000" + response.data[movie].poster.path
+                            }
                             vm.$store.commit("addMovie", {
                                 obj:response.data[movie],
                                 many:true}
                             )
-                            console.log(movie)
                         }
                     }
-                    vm.searchIndex += 30
+                    vm.searchIndex += response.data.length
                 }).catch(function(err) {
                     console.log(err)
                 })
         },
+        getNext() {
+            window.onscroll = () => {
+                let bottomOfWindow = Math.ceil(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight;
+                console.log(bottomOfWindow)
+                if (bottomOfWindow) {
+                    this.findMovies(false)
+                }
+            }
+        }
     },
     components: {
         Slider,
@@ -123,6 +137,7 @@ export default {
         this.getGenres()
     },
     mounted() {
+        this.getNext()
       
     },
 }
