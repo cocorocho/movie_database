@@ -1,4 +1,4 @@
-import { createStore } from 'vuex'
+import { createStore, storeKey } from 'vuex'
 
 export default createStore({
   state: {
@@ -8,10 +8,15 @@ export default createStore({
     addMovie(state, payload) {
       let obj = payload.obj
       let many = payload.many
-      console.log(many)
-      if (state.movies.length && !many) state.movies = []
+      if (state.movies.length && !many) {
+        for (let i=0; i < state.movies.length; i++) {
+          state.movies.pop()
+        }
+      }
       state.movies.push(obj)
-      console.log(state.movies)
+    },
+    resetMovies(state) {
+      state.movies.splice(0);
     }
   },
   actions: {
