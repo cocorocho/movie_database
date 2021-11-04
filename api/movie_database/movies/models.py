@@ -102,7 +102,3 @@ class Actor(models.Model):
     def save(self):
         self.name = self.name.lower()
         super().save()
-
-
-
-
