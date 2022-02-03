@@ -1,15 +1,11 @@
-from re import search
-from django.shortcuts import render
-from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import GenreSerializer, MovieSerializer
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from .models import Genre, Movie
 from rest_framework import status
-from django.db.models import Q, manager
+from django.db.models import Q
 
-# Create your views here.
 
 class GetGenres(APIView):
     permission_classes = [AllowAny]
