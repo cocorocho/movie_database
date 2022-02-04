@@ -1,0 +1,6 @@
+venv
+workspace.code-workspace
+
+api/movie_database/movie_database/__pycache__
+api/movie_database/movies/__pycache__
+resources.txt
