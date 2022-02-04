@@ -25,8 +25,8 @@ class FindMovie(APIView):
         if movie_name:
             movie_name = movie_name.title()
             try:
-                movie = Movie.objects.filter(name=movie_name).first()
-                serializer = MovieSerializer(movie, many=False)
+                movie = Movie.objects.filter(name__contains=movie_name)
+                serializer = MovieSerializer(movie, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except Movie.DoesNotExist:
                 return Response(status=status.HTTP_204_NO_CONTENT)
