@@ -7,7 +7,10 @@ export default createStore({
   mutations: {
     addMovie(state, payload) {
       let obj = payload.obj
-      this.commit("resetMovies")
+      const append = payload.append
+      if (!append) {
+        this.commit("resetMovies")
+      }
       obj.forEach(movie => {
         state.movies.push(movie)
       });

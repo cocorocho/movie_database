@@ -37,7 +37,6 @@
     </div>
 </template>
 
-// https://bestofvue.com/repo/vueform-slider-vuejs-slider#multiple-slider
 
 <style src="@vueform/slider/themes/default.css">
 #grow {
@@ -88,8 +87,9 @@ export default {
             let year = date.getFullYear()
             return year
         },
-        findMovies(reset=true) {
-            let baseUrl = "movies/find/"
+        async findMovies(event, append=false) {
+            const BASEURL = "movies/find/"
+            const DEFAULTPOSTER = `${axios.defaults.baseURL}/media/cinema-4153289_640.jpg`
             var vm = this
             let args = {
                 searchIndex: vm.searchIndex, 
@@ -99,33 +99,30 @@ export default {
                 scoreImdb: vm.scoreImdb,
                 scoreRottenTomatoes: vm.scoreRottenTomatoes
             }
-            if (reset) vm.$store.commit("resetMovies")
-            axios.get(baseUrl, {params: args})
-                .then(function(response) {
-                    if (response.data.length) {
-                        for (let movie in response.data) {
-                            if (response.data[movie].poster.path == null) {
-                                response.data[movie].poster.path = "http://localhost:8000/media/cinema-4153289_640.jpg"
-                            } else {
-                                response.data[movie].poster.path = "http://localhost:8000" + response.data[movie].poster.path
-                            }
-                            vm.$store.commit("addMovie", {
-                                obj:response.data[movie],
-                                many:true}
-                            )
-                        }
+            try {
+                let response = await axios.get(BASEURL, {params: args})
+                let movies = response.data
+                if (movies) {
+                    movies.forEach(movie => {
+                    if (!movie.poster.path) {
+                        movie.poster.path = DEFAULTPOSTER
+                    } else {
+                        movie.poster.path = axios.defaults.baseURL + movie.poster.path
                     }
+                    })
+                    vm.$store.commit("addMovie", {obj: movies, append: append})
                     vm.searchIndex += response.data.length
-                }).catch(function(err) {
-                    console.log(err)
-                })
+                }
+            } catch (error) {
+                console.log(error)
+                console.error("Error with filtering movies")
+            }
         },
         getNext() {
             window.onscroll = () => {
                 let bottomOfWindow = Math.ceil(document.documentElement.scrollTop + window.innerHeight) === document.documentElement.offsetHeight;
-                console.log(bottomOfWindow)
                 if (bottomOfWindow) {
-                    this.findMovies(false)
+                    this.findMovies(null, true)
                 }
             }
         }
@@ -138,8 +135,6 @@ export default {
     },
     mounted() {
         this.getNext()
-      
     },
 }
 </script>
-
