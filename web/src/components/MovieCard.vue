@@ -9,7 +9,7 @@
                     <p class="font-bold">Language: <span class="font-medium capitalize">{{ language }}</span></p>
                     <p class="font-bold">
                         Genres: 
-                        <span class="font-medium" v-for="genre in genres" v-bind="genre">
+                        <span class="font-medium" v-for="genre in genres">
                             {{ genre.name }}, 
                         </span>
                     </p>
@@ -40,7 +40,7 @@
                 </div>                
             </div>
             <div class="my-auto">
-                <h1 class="font-bold font-2xl text-center">{{ name }} ({{ year }})</h1>
+                <h1 class="font-bold font-2xl text-center pt-3">{{ name }} ({{ year }})</h1>
             </div>
         </a>
     </div>    
@@ -83,15 +83,14 @@
 
 <script>
 export default {
-    setup() {
-    },
+ 
     props: {
         name: {"required":true, type:String},
         movieUrl: {"required":false, type:String},
         poster: {"required":true, type:String},
         year: {"required":true, type:Number},
         description: {"required": false, type:String},
-        genres: {"required":false, type:String},
+        genres: {"required":false, type:Object},
         language: {"required":false, type:String},
         imdb_score: {"required":false, type:Number},
         imdb_vote_count: {"required": false, type:String},
@@ -116,6 +115,3 @@ export default {
     }
 }
 </script>
-
-# TODO Poster Scaling
-# TODO Movie info tab
