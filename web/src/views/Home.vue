@@ -5,7 +5,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
             <MovieCard v-for="movie in movies" 
                 :key="movie.id"
-                :name="toTitle(movie.name)"
+                :name="movie.name"
                 :movieUrl="movie.url"
                 :poster="movie.poster"
                 :year="movie.year"
@@ -52,7 +52,7 @@ export default {
             yearValue: [1800, this.getYear()],
             scoreImdb: 7,
             scoreRottenTomatoes: 60,
-            movies: this.$store.state.movies
+            movies: this.$store.getters.getMovies
         }
     },
     methods: {
@@ -75,10 +75,6 @@ export default {
             let year = date.getFullYear()
             return year
         },
-        toTitle(string) {
-            let str = string[0].toUpperCase() + string.slice(1)
-            return str
-        },
     },
     components: {
         Slider,
@@ -87,8 +83,6 @@ export default {
     },
     beforeMount() {
         this.getGenres()
-    },
-    mounted() {
     },
 }
 </script>
