@@ -68,23 +68,24 @@ export default {
     setup() {
     },
     methods: {
-		findMovie(e) {
+		async findMovie(e) {
 			var vm = this
-			let baseUrl = "movies/find/"
+			const BASEURL = "movies/find/"
+
 			if (e.keyCode === 13) {
-				baseUrl = "movies/find/"
-				axios
-				.get(baseUrl, {params: {
-					movieName: vm.movieName
-				}})
-				.then(function(response) {
-					let mov = response.data
-					if (response.data !== "") {
-						mov.poster.path = "http://localhost:8000" + mov.poster.path
-						vm.$store.commit("addMovie", {obj:mov})
-					}
-				}).catch(function(err) {
-				})
+				try {
+					let response = await axios.get(BASEURL, {params: {movieName: vm.movieName}})
+					let movies = response.data
+
+					// Add poster url
+					movies.forEach(movie => {
+						movie.poster.path = `${axios.defaults.baseURL}${movie.poster.path}`
+					})
+					vm.$store.commit("addMovie", {obj: movies})
+				} catch (error) {
+					console.log(error)
+					
+				}
 				vm.movieName = ""
 			}
 		}
