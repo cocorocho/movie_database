@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  django:
+    container_name: moviesdjango
+    build:
+      context: ./
+      dockerfile: ./docker/containers/django/Dockerfile
+    image: moviesdjango:python_django
+    volumes:
+      - ./api/movie_database:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+
+  vue:
+    container_name: moviesvue
+    build:
+      context: ./
+      dockerfile: ./docker/containers/vue/Dockerfile
+    image: moviesvue:vue3
+    command: npm run serve
+    depends_on:
+      - django
+    ports:
+      - 8080:8080
