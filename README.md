@@ -16,12 +16,14 @@
 -  **Install Locally**
 
 	Navigate to project folder
+	
 	```bash
 	chmod +x install.sh
 	./install.sh
 	```
 	
 - **Docker Install**
+
 	Navigate to project folder
 	```bash
 	docker-compose up
