@@ -22,6 +22,10 @@
 	```
 	
 - **Docker Install**
+	Navigate to project folder
+	```bash
+	docker-compose up
+	```
 
 ### To Run
 
